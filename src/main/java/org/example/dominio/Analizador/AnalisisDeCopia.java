@@ -7,7 +7,6 @@ import org.paukov.combinatorics3.Generator;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Getter
 public class AnalisisDeCopia {

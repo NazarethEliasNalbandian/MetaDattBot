@@ -34,6 +34,6 @@ public class ResultadoLoteTest {
 
         List<ParDocumento> posibles = resultado.getPosiblesCopias();
         assertEquals(1, posibles.size(), "Debe haber un par de documentos registrado");
-        assertEquals(par, posibles.get(0), "El par agregado debe coincidir con el recuperado");
+        assertEquals(par, posibles.getFirst(), "El par agregado debe coincidir con el recuperado");
     }
 }

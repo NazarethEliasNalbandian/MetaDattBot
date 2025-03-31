@@ -36,8 +36,6 @@ public class AnalisisDeCopiaTest {
         assertFalse(resultado.getPosiblesCopias().isEmpty(), "Debe detectar al menos un par como copia");
 
         System.out.println("📄 Resultado del análisis:");
-        resultado.getPosiblesCopias().forEach(par -> {
-            System.out.println(par.getDocumento1().getAutor() + " <-> " + par.getDocumento2().getAutor());
-        });
+        resultado.getPosiblesCopias().forEach(par -> System.out.println(par.getDocumento1().getAutor() + " <-> " + par.getDocumento2().getAutor()));
     }
 }
