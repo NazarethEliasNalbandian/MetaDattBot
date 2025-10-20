@@ -16,13 +16,22 @@ public class ListarHechosCommand implements BotCommand {
 
     @Override
     public SendMessage handle(Update update) throws Exception {
-        String[] parts = update.getMessage().getText().split(" ", 2);
-        String coleccion = parts.length > 1 ? parts[1] : "";
-        String result = agregadorClient.listarHechos(coleccion);
+        Long chatId = update.getMessage().getChatId();
+        String text = update.getMessage().getText().trim();
 
         SendMessage msg = new SendMessage();
-        msg.setChatId(update.getMessage().getChatId().toString());
-        msg.setText(result);
+        msg.setChatId(chatId.toString());
+
+        String[] parts = text.split(" ", 2);
+        if (parts.length < 2) {
+            msg.setText("Uso: /listar <nombre_coleccion>");
+            return msg;
+        }
+
+        String coleccion = parts[1];
+        String respuesta = agregadorClient.listarHechos(coleccion);
+
+        msg.setText(respuesta);
         return msg;
     }
 }
