@@ -30,7 +30,7 @@ public class CambiarEstadoCommand implements BotCommand {
         SendMessage msg = new SendMessage();
         msg.setChatId(chatId.toString());
 
-        // Si ya hay conversación en curso
+        // Si ya hay una conversación en curso
         if (conversaciones.containsKey(chatId) && !text.startsWith("/cambiarestado")) {
             return manejarConversacion(chatId, text);
         }
@@ -60,23 +60,21 @@ public class CambiarEstadoCommand implements BotCommand {
             switch (conv.pasoActual) {
                 case ESTADO -> {
                     conv.estado = text.toUpperCase();
-                    conv.pasoActual = ConversacionEstado.Paso.DESCRIPCION;
-                    msg.setText("✏️ Ingresá una descripción o motivo del cambio de estado:");
-                }
-                case DESCRIPCION -> {
-                    conv.descripcion = text;
-                    conv.pasoActual = ConversacionEstado.Paso.COMPLETO;
+
+                    // Validar estado permitido (opcional)
+                    if (!conv.estado.matches("ACEPTADA|RECHAZADA|PENDIENTE")) {
+                        msg.setText("⚠️ Estado no válido. Solo se permiten: ACEPTADA, RECHAZADA o PENDIENTE.");
+                        return msg;
+                    }
 
                     String jsonBody = String.format("""
                         {
                           "id": "%s",
-                          "estado": "%s",
-                          "descripcion": "%s"
+                          "estado": "%s"
                         }
                         """,
                             conv.idSolicitud,
-                            conv.estado,
-                            conv.descripcion
+                            conv.estado
                     );
 
                     String respuesta = solicitudesClient.cambiarEstado(jsonBody);
